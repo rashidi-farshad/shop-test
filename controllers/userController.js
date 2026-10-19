@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import userModel from "../models/userModel.js";
 import userSchema from "../validators/userValidator.js";
 
@@ -14,4 +15,18 @@ export const createUserSchema = async (req, res) => {
 
   const user = await userModel.create(result.data);
   res.status(201).json({ message: "new user created" });
+};
+
+export const removeUser = async (req, res) => {
+  let { id } = req.params;
+  const existUser = mongoose.isValidObjectId(id);
+  if (!existUser) {
+    return res.status(400).send({ message: "Invalid user id" });
+  }
+  const user = await userModel.findByIdAndDelete(id);
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.json({ message: "User deleted", user });
 };

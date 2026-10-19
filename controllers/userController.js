@@ -13,5 +13,5 @@ export const createUserSchema = async (req, res) => {
   }
 
   const user = await userModel.create(result.data);
-  res.status(201).send({ message: "new user created" }, user);
+  res.status(201).json({ message: "new user created" });
 };
